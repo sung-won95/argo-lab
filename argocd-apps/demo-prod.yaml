@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-prod
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sung-won95/argo-lab.git
+    targetRevision: main
+    path: manifests/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  syncPolicy:
+    automated:
+      prune: true
+      # selfHeal 은 실습 ③에서 직접 켜봅니다 (지금은 꺼둔 상태)
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
